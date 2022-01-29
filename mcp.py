@@ -65,16 +65,16 @@ def playnotes(notes):
             outport.send(Message('note_off', note=n.note))
     
 
-def twistknob():
+def twistknob(control_number):
     print('going up')
     for i in range(0,120):
-        outport.send(Message('control_change', channel=0, control=9, value=i))
-        time.sleep(0.01)
+        outport.send(Message('control_change', channel=0, control=control_number, value=i))
+        time.sleep(0.005)
     
     print('going down')
     for i in range(120,0,-1):
-        outport.send(Message('control_change', channel=0, control=9, value=i))
-        time.sleep(0.01)
+        outport.send(Message('control_change', channel=0, control=control_number, value=i))
+        time.sleep(0.005)
 
         
         
@@ -84,7 +84,11 @@ def twistknob():
 #playnotes(G)
 #playnotes(C)
 
-twistknob()
+while True:
+    twistknob(9)
+    twistknob(23)
+    time.sleep(1)
+    
 print("Done.")
 #while True:
 #    k = keyboard.read_key()
