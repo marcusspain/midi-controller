@@ -5,6 +5,9 @@ from mido import Message
 from mido import MidiFile
 import time
 
+import signal
+import sys
+
 outport = mido.open_output('f_midi:f_midi 16:0')
 vel=80
 
@@ -47,8 +50,10 @@ G    = [ Message('note_on', note=67, velocity=vel, time=0),
          Message('note_on', note=79, velocity=vel, time=0) ]
 
 
-
-#notes = C
+def signal_handler(sig, frame):
+    print('Exiting')
+    sys.exit(0)
+    
 
 def playnotes(notes):
     print('notes')
@@ -76,19 +81,25 @@ def twistknob(control_number):
         outport.send(Message('control_change', channel=0, control=control_number, value=i))
         time.sleep(0.005)
 
-        
-        
-#playnotes(C)
-#playnotes(C)
-#playnotes(F)
-#playnotes(G)
-#playnotes(C)
 
+
+
+signal.signal(signal.SIGINT, signal_handler)
+print('Ctrl+C to exit')        
+        
+# playnotes(C)
+# playnotes(C)
+# playnotes(F)
+# playnotes(G)
+# playnotes(C)
+# 
 while True:
     twistknob(9)
-    twistknob(23)
+#     twistknob(23)
     time.sleep(1)
-    
+
+# twistknob(9)
+
 print("Done.")
 #while True:
 #    k = keyboard.read_key()
